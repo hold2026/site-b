@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prévisions Météo - Site-B</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+    h1 { color: #333; text-align: center; }
+    .search { text-align: center; margin: 20px 0; }
+    input { padding: 10px; width: 300px; font-size: 16px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+    .result { background: white; padding: 20px; border-radius: 8px; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .error { color: red; font-weight: bold; }
+    .success { color: green; }
+    .footer { text-align: center; margin-top: 30px; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>🌤️ Calculateur Météo Gratuit</h1>
+  <p style="text-align: center; color: #666;">Consultez les prévisions météo de n'importe quelle ville. <em>Contenu IA</em>.</p>
+  
+  <div class="search">
+    <input type="text" id="city" placeholder="Entrez une ville (ex: Paris, Lyon)" />
+    <button onclick="getWeather()">Rechercher</button>
+  </div>
+  
+  <div id="result"></div>
+  
+  <div class="footer">
+    <p>Données fournies par <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> (API gratuite, open source).</p>
+    <p>Aucun frais, aucune clé API requise.</p>
+  </div>
+  
+  <script>
+    async function getWeather() {
+      const city = document.getElementById('city').value.trim();
+      const resultDiv = document.getElementById('result');
+      
+      if (!city) {
+        resultDiv.innerHTML = '<div class="error">Veuillez entrer une ville.</div>';
+        return;
+      }
+      
+      resultDiv.innerHTML = '<p>Recherche en cours...</p>';
+      
+      try {
+        // Géocodage via Open-Meteo
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fr`);
+        const geoData = await geoRes.json();
+        
+        if (!geoData.results || geoData.results.length === 0) {
+          resultDiv.innerHTML = '<div class="error">Ville non trouvée. Vérifiez l\'orthographe.</div>';
+          return;
+        }
+        
+        const { latitude, longitude, name, country } = geoData.results[0];
+        
+        // Prévisions météo
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`);
+        const weatherData = await weatherRes.json();
+        
+        const current = weatherData.current;
+        const daily = weatherData.daily;
+        
+        let html = `<div class="result">`;
+        html += `<h2 class="success">${name}, ${country}</h2>`;
+        html += `<p><strong>Température actuelle :</strong> ${current.temperature_2m}°C</p>`;
+        html += `<p><strong>Vitesse du vent :</strong> ${current.wind_speed_10m} km/h</p>`;
+        html += `<h3>Prévisions (3 jours)</h3>`;
+        html += `<ul>`;
+        for (let i = 0; i < 3; i++) {
+          html += `<li>${daily.time[i]} : ${daily.temperature_2m_min[i]}°C à ${daily.temperature_2m_max[i]}°C</li>`;
+        }
+        html += `</ul>`;
+        html += `</div>`;
+        
+        resultDiv.innerHTML = html;
+      } catch (error) {
+        resultDiv.innerHTML = `<div class="error">Erreur : ${error.message}</div>`;
+      }
+    }
+    
+    document.getElementById('city').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') getWeather();
+    });
+  </script>
+  
+  <script data-goatcounter="https://hold2026.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
