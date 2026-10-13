@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Convertisseur de Devises Gratuit</title>
+<meta name="description" content="Convertisseur de devises en temps réel. Taux de change actualisés pour 160+ devises. Contenu IA.">
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 600px; margin: 2rem auto; padding: 1rem; }
+input, select { padding: 0.5rem; font-size: 1rem; }
+button { padding: 0.5rem 1rem; background: #0066cc; color: white; border: none; cursor: pointer; border-radius: 4px; }
+button:hover { background: #0052a3; }
+.result { margin-top: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px; }
+</style>
+</head>
+<body>
+<h1>Convertisseur de Devises</h1>
+<p><em>Contenu IA. Données en temps réel via <a href="https://exchangerate.host">exchangerate.host</a> (API gratuite, open data).</em></p>
+<div>
+  <label>Montant : <input type="number" id="amount" value="1" min="0" step="0.01"></label>
+  <label>De : <select id="from"><option>EUR</option><option>USD</option><option>GBP</option><option>JPY</option><option>CHF</option><option>CAD</option><option>AUD</option><option>CNY</option><option>INR</option><option>BRL</option></select></label>
+  <label>À : <select id="to"><option>USD</option><option>EUR</option><option>GBP</option><option>JPY</option><option>CHF</option><option>CAD</option><option>AUD</option><option>CNY</option><option>INR</option><option>BRL</option></select></label>
+  <button onclick="convert()">Convertir</button>
+</div>
+<div id="result" class="result" style="display:none;"></div>
+<script>
+async function convert() {
+  const amount = parseFloat(document.getElementById('amount').value);
+  const from = document.getElementById('from').value;
+  const to = document.getElementById('to').value;
+  try {
+    const res = await fetch(`https://api.exchangerate.host/convert?from=${from}&to=${to}&amount=${amount}`);
+    const data = await res.json();
+    if (data.result) {
+      document.getElementById('result').innerHTML = `<strong>${amount} ${from} = ${data.result.toFixed(2)} ${to}</strong><br>Taux : 1 ${from} = ${(data.result/amount).toFixed(4)} ${to}<br>Source : ${new Date().toLocaleString('fr-FR')}`;
+      document.getElementById('result').style.display = 'block';
+    }
+  } catch(e) {
+    document.getElementById('result').innerHTML = 'Erreur lors du chargement des taux.';
+    document.getElementById('result').style.display = 'block';
+  }
+}
+</script>
+<script data-goatcounter="https://hold2026.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
