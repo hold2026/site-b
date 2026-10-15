@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hold2026.github.io/site-b/sitemap.xml
