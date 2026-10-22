@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculatrice IMC</title>
+<style>body{font-family:Arial,sans-serif;max-width:600px;margin:50px auto;padding:20px}input{margin:10px 0;padding:8px;width:100%}button{padding:10px;background:#007bff;color:white;border:none;cursor:pointer}#result{margin-top:20px;font-weight:bold}</style>
+</head>
+<body>
+<h1>Calculatrice IMC (Indice de Masse Corporelle)</h1>
+<p><em>Contenu généré avec IA. Les résultats sont informatifs et ne remplacent pas un avis médical professionnel.</em></p>
+<form onsubmit="calculerIMC(event)">
+<label>Poids (kg) :</label>
+<input type="number" id="poids" placeholder="Ex: 70" required>
+<label>Taille (cm) :</label>
+<input type="number" id="taille" placeholder="Ex: 175" required>
+<button type="submit">Calculer IMC</button>
+</form>
+<div id="result"></div>
+<script>
+function calculerIMC(e){
+e.preventDefault();
+const poids=parseFloat(document.getElementById('poids').value);
+const taille=parseFloat(document.getElementById('taille').value)/100;
+const imc=(poids/(taille*taille)).toFixed(1);
+let categorie='';
+if(imc<18.5)categorie='Poids insuffisant';
+else if(imc<25)categorie='Normal';
+else if(imc<30)categorie='Surpoids';
+else categorie='Obésité';
+document.getElementById('result').innerHTML=`IMC: ${imc} (${categorie})`;
+}
+</script>
+<script data-goatcounter="https://hold2026.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
