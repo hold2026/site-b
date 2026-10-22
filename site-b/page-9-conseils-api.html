@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conseils pratiques pour utiliser les APIs gratuites</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+    h1 { color: #333; }
+    h2 { color: #666; margin-top: 20px; }
+    code { background: #f4f4f4; padding: 2px 4px; border-radius: 3px; }
+    .ia-notice { background: #fffbcc; padding: 10px; border-left: 4px solid #ffeb3b; margin: 15px 0; }
+  </style>
+</head>
+<body>
+  <h1>Conseils pratiques pour utiliser les APIs gratuites</h1>
+  <div class="ia-notice"><strong>⚠ Contenu généré avec aide IA</strong></div>
+  
+  <h2>1. Respecter les limites de débit</h2>
+  <p>Chaque API gratuite impose une limite d'appels par minute ou par jour. Consultez la documentation avant de commencer :</p>
+  <ul>
+    <li>Weather API : 1M appels/mois</li>
+    <li>Open-Meteo : illimité, sans clé</li>
+    <li>ExchangeRate-API : 1500 appels/mois en gratuit</li>
+  </ul>
+  
+  <h2>2. Cacher votre clé d'API</h2>
+  <p>Si vous devez utiliser une clé :</p>
+  <ul>
+    <li>Ne jamais la mettre dans du code public (GitHub, HTML client-side)</li>
+    <li>Utiliser un serveur proxy ou des variables d'environnement</li>
+    <li>Régénérer votre clé si elle a été exposée</li>
+  </ul>
+  
+  <h2>3. Gérer les erreurs gracieusement</h2>
+  <p>Les APIs gratuites peuvent être instables. Prévoyez :</p>
+  <ul>
+    <li>Un timeout de 10 secondes</li>
+    <li>Un message par défaut si la requête échoue</li>
+    <li>Un cache local pour éviter trop de requêtes</li>
+  </ul>
+  
+  <h2>4. Optimiser vos requêtes</h2>
+  <p>Réduisez la bande passante et les appels :</p>
+  <ul>
+    <li>Demander uniquement les champs nécessaires</li>
+    <li>Utiliser le cache navigateur (30 minutes)</li>
+    <li>Dédupliquer les requêtes identiques</li>
+  </ul>
+  
+  <h2>5. Respecter les conditions d'utilisation</h2>
+  <p>Lire la licence de chaque API :</p>
+  <ul>
+    <li>Crédit d'attribution obligatoire ?</li>
+    <li>Usage commercial autorisé ?</li>
+    <li>Partage des résultats interdit ?</li>
+  </ul>
+  
+  <p><strong>Ressources :</strong> <a href="https://github.com/public-apis/public-apis">Liste publique d'APIs</a></p>
+  
+  <script data-goatcounter="https://hold2026.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
